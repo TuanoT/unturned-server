@@ -1,0 +1,10 @@
+version: "3.8"
+services:
+  unturned:
+    build: .
+    container_name: unturned
+    ports:
+      - "27015:27015/udp"
+    volumes:
+      - ~/unturned-data:/unturned
+    restart: unless-stopped
