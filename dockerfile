@@ -11,6 +11,15 @@ RUN dpkg --add-architecture i386 && \
 
 # Create steam user
 RUN useradd -m steam
+
+# Create Unturned directory
+RUN mkdir -p /home/steam/Unturned
+
+# Add startup script
+COPY init.sh /home/steam/init.sh
+RUN chmod +x /home/steam/init.sh
+
+# Switch to steam user
 USER steam
 WORKDIR /home/steam
 
@@ -19,13 +28,6 @@ RUN mkdir -p /home/steam/steamcmd && \
     cd /home/steam/steamcmd && \
     wget https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz && \
     tar -xvzf steamcmd_linux.tar.gz
-
-# Create Unturned directory
-RUN mkdir -p /home/steam/Unturned
-
-# Add startup script
-COPY init.sh /home/steam/init.sh
-RUN chmod +x /home/steam/init.sh
 
 # Default working directory
 WORKDIR /home/steam/Unturned
