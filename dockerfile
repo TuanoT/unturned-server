@@ -9,7 +9,11 @@ RUN dpkg --add-architecture i386 && \
     mono-complete screen libstdc++6:i386 libgcc-s1:i386 zlib1g:i386 && \
     rm -rf /var/lib/apt/lists/*
 
-# Create steam user
+# Add startup script
+COPY init.sh /home/steam/init.sh
+RUN chmod +x /home/steam/init.sh && chown steam:steam /home/steam/init.sh
+
+# Create and switch to steam user
 RUN useradd -m steam
 USER steam
 WORKDIR /home/steam
@@ -23,10 +27,6 @@ RUN mkdir -p /home/steam/steamcmd && \
 # Create Unturned directory
 RUN mkdir -p /home/steam/Unturned
 
-# Add startup script
-COPY init.sh /home/steam/init.sh
-RUN chmod +x /home/steam/init.sh
-
 # Default working directory
 WORKDIR /home/steam/Unturned
 
@@ -35,3 +35,4 @@ EXPOSE 27015/udp 27016/udp
 
 # Run script
 ENTRYPOINT ["/home/steam/init.sh"]
+
