@@ -1,0 +1,21 @@
+version: "3.8"
+
+volumes:
+  unturned-data:
+
+
+services:
+  unturned:
+    build: .
+    image: unturned-latest:latest
+    container_name: unturned-server
+    ports:
+      - "27015:27015/udp"
+      - "27016:27016/udp"
+    volumes:
+      - unturned-data:/home/steam/Unturned
+    environment:
+      SERVER_NAME: MelbourneVanilla
+    restart: unless-stopped
+    stdin_open: true
+    tty: true

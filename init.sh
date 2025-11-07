@@ -1,17 +1,26 @@
 #!/bin/bash
 set -e
 
-cd /home/steam/steamcmd
+export TERM=xterm
 
 echo "=== Updating Unturned Dedicated Server ==="
-./steamcmd.sh +login anonymous +force_install_dir /home/steam/Unturned +app_update 1110390 validate +quit
+cd "$STEAMCMD_DIR"
+./steamcmd.sh +login "$STEAM_USERNAME" +force_install_dir "$GAME_INSTALL_DIR" +app_update "$GAME_ID" validate +quit
 
-cd /home/steam/Unturned
+cd "$GAME_INSTALL_DIR"
 
-if [ ! -d "Servers/MyServer" ]; then
-  echo "=== Creating default server structure ==="
-  mkdir -p Servers/MyServer
+if [ ! -d "Servers/$SERVER_NAME" ]; then
+  echo "=== Creating server structure for '$SERVER_NAME' ==="
+  mkdir -p "Servers/$SERVER_NAME"
 fi
 
-echo "=== Starting Unturned Server ==="
-./Unturned_Headless.x86_64 -nographics -batchmode +InternetServer/MyServer
+echo "=== Setting up environment ==="
+ulimit -n 2048
+if [ -d "./Unturned_Headless_Data" ]; then
+    export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$(pwd)/Unturned_Headless_Data/Plugins/x86_64/"
+else
+    export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$(pwd)/Unturned_Headless/Plugins/x86_64/"
+fi
+
+echo "=== Starting Unturned server '$SERVER_NAME' ==="
+exec ./Unturned_Headless.x86_64 -nographics -batchmode +InternetServer/"$SERVER_NAME"
