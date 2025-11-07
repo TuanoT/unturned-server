@@ -1,21 +1,23 @@
-version: "3.8"
-
+---
 volumes:
-  unturned-data:
+  data:
 
 
 services:
-  unturned:
-    build: .
-    image: unturned-latest:latest
-    container_name: unturned-server
+  server:
+    image: "unturned-docker:latest"
+    build:
+      args:
+        PLATFORM: linux/amd64
+      context: .
+      dockerfile: Dockerfile
     ports:
-      - "27015:27015/udp"
-      - "27016:27016/udp"
+      - "27015:27015"
+      - "27016:27016"
     volumes:
-      - unturned-data:/home/steam/Unturned
+      - data:/home/steam/Unturned
     environment:
-      SERVER_NAME: MelbourneVanilla
+      SERVER_TYPE: rm4
     restart: unless-stopped
     stdin_open: true
     tty: true
