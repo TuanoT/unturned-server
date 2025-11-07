@@ -1,21 +1,17 @@
 #!/bin/bash
+set -e
 
-cd "$GAME_INSTALL_DIR" || exit
+cd /home/steam/steamcmd
 
-ulimit -n 2048
+echo "=== Updating Unturned Dedicated Server ==="
+./steamcmd.sh +login anonymous +force_install_dir /home/steam/Unturned +app_update 1110390 validate +quit
 
-export TERM=xterm
+cd /home/steam/Unturned
 
-if [ -d "./Unturned_Headless_Data" ]; then
-    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:`dirname $0`/Unturned_Headless_Data/Plugins/x86_64/
-else
-    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:`dirname $0`/Unturned_Headless/Plugins/x86_64/
+if [ ! -d "Servers/MyServer" ]; then
+  echo "=== Creating default server structure ==="
+  mkdir -p Servers/MyServer
 fi
 
-if [ ! -d "$MODULES_DIR/Rocket.Unturned" ]; then
-    if [ "$SERVER_TYPE" == "rm4" ]; then
-      cp -rf "$GAME_INSTALL_DIR"/Extras/Rocket.Unturned/ "$GAME_INSTALL_DIR"/Modules/
-    fi
-fi
-
-./Unturned_Headless.x86_64 -logfile 2>&1 -batchmode -nographics +secureserver/"$SERVER_NAME"
+echo "=== Starting Unturned Server ==="
+./Unturned_Headless.x86_64 -nographics -batchmode +InternetServer/MyServer
