@@ -3,6 +3,8 @@ set -e
 
 export TERM=xterm
 
+chown -R steam:steam /home/steam/Unturned || true
+
 echo "=== Updating Unturned Dedicated Server ==="
 cd "$STEAMCMD_DIR"
 ./steamcmd.sh +login "$STEAM_USERNAME" +force_install_dir "$GAME_INSTALL_DIR" +app_update "$GAME_ID" validate +quit
