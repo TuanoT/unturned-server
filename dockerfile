@@ -9,12 +9,14 @@ RUN dpkg --add-architecture i386 && \
     mono-complete screen libstdc++6:i386 libgcc-s1:i386 zlib1g:i386 && \
     rm -rf /var/lib/apt/lists/*
 
+# Create steam user
+RUN useradd -m steam
+
 # Add startup script
 COPY init.sh /home/steam/init.sh
 RUN chmod +x /home/steam/init.sh && chown steam:steam /home/steam/init.sh
 
-# Create and switch to steam user
-RUN useradd -m steam
+# Switch to steam user
 USER steam
 WORKDIR /home/steam
 
