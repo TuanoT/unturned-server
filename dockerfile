@@ -1,39 +1,45 @@
-# Unturned Dedicated Server (latest) — Vanilla
-FROM ubuntu:22.04
+FROM ubuntu:bionic
 
-# Install dependencies
-RUN dpkg --add-architecture i386 && \
-    apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -y \
-    wget curl unzip ca-certificates lib32gcc-s1 libgdiplus libmono-system-data-datasetextensions4.0-cil \
-    mono-complete screen libstdc++6:i386 libgcc-s1:i386 zlib1g:i386 && \
-    rm -rf /var/lib/apt/lists/*
+ENV DEBIAN_FRONTEND noninteractive
+ENV GAME_INSTALL_DIR /home/steam/Unturned
+ENV GAME_ID 1110390
+ENV SERVER_NAME server
+ENV STEAM_USERNAME anonymous
+ENV STEAMCMD_DIR /home/steam/steamcmd
 
-# Create steam user
-RUN useradd -m steam
+EXPOSE 27015
+EXPOSE 27016
 
-# Create Unturned directory
-RUN mkdir -p /home/steam/Unturned
+VOLUME ["$GAME_INSTALL_DIR"]
 
-# Add startup script
-COPY init.sh /home/steam/init.sh
-RUN chmod +x /home/steam/init.sh
+# Install required packages
+RUN apt-get update && \
+    apt-get install -y unzip tar curl coreutils lib32gcc1 libgdiplus && \
+    apt-get clean -y && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-# Switch to steam user
+# Add Steam user
+RUN adduser \
+    --home /home/steam \
+    --disabled-password \
+    --shell /bin/bash \
+    --gecos "user for running steam" \
+    --quiet \
+    steam
+
 USER steam
-WORKDIR /home/steam
+WORKDIR $STEAMCMD_DIR
 
-# Install SteamCMD
-RUN mkdir -p /home/steam/steamcmd && \
-    cd /home/steam/steamcmd && \
-    wget https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz && \
-    tar -xvzf steamcmd_linux.tar.gz
+RUN mkdir -p $GAME_INSTALL_DIR
 
-# Default working directory
-WORKDIR /home/steam/Unturned
+# Install Unturned
+RUN curl -s https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz | tar -vxz && \
+    bash ./steamcmd.sh +force_install_dir $GAME_INSTALL_DIR +login $STEAM_USERNAME $STEAM_PASSWORD $STEAM_GUARD_TOKEN $STEAM_CMD_ARGS +@sSteamCmdForcePlatformBitness 64 +app_update $GAME_ID +quit && \
+    mkdir -p /home/steam/.steam/sdk64/ && \
+    cp -f linux64/steamclient.so /home/steam/.steam/sdk64/steamclient.so
 
-# Ports
-EXPOSE 27015/udp 27016/udp
+WORKDIR $STEAMCMD_DIR
 
-# Run script
-ENTRYPOINT ["/home/steam/init.sh"]
+COPY init.sh .
+
+ENTRYPOINT ["./init.sh"]
