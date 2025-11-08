@@ -39,7 +39,7 @@ RUN curl -s https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.
 WORKDIR /home/steam/steamcmd
 
 COPY init.sh .
-RUN chmod +x init.sh
+# RUN chmod +x init.sh
 ENTRYPOINT ["./init.sh"]
 
 VOLUME ["/home/steam/Unturned"]
