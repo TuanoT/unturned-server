@@ -1,16 +1,11 @@
 FROM ubuntu:bionic
 
-ENV DEBIAN_FRONTEND noninteractive
-ENV GAME_INSTALL_DIR /home/steam/Unturned
-ENV GAME_ID 1110390
-ENV SERVER_NAME server
-ENV STEAM_USERNAME anonymous
-ENV STEAMCMD_DIR /home/steam/steamcmd
+# Avoid interactive prompts
+ENV DEBIAN_FRONTEND=noninteractive
 
+# Expose Unturned ports
 EXPOSE 27015
 EXPOSE 27016
-
-VOLUME ["$GAME_INSTALL_DIR"]
 
 # Install required packages
 RUN apt-get update && \
@@ -27,10 +22,13 @@ RUN adduser \
     --quiet \
     steam
 
+# Switch to Steam user
 USER steam
-WORKDIR $STEAMCMD_DIR
 
-RUN mkdir -p $GAME_INSTALL_DIR
+# Create directories
+RUN mkdir -p /home/steam/steamcmd /home/steam/Unturned
+
+WORKDIR /home/steam/steamcmd
 
 # Install Unturned
 RUN curl -s https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz | tar -vxz && \
@@ -43,3 +41,5 @@ WORKDIR $STEAMCMD_DIR
 COPY init.sh .
 
 ENTRYPOINT ["./init.sh"]
+
+VOLUME ["/home/steam/Unturned"]
