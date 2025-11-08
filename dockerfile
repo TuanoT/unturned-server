@@ -36,7 +36,7 @@ RUN curl -s https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.
     mkdir -p /home/steam/.steam/sdk64/ && \
     cp -f linux64/steamclient.so /home/steam/.steam/sdk64/steamclient.so
 
-WORKDIR $STEAMCMD_DIR
+WORKDIR /home/steam/steamcmd
 
 COPY init.sh .
 
