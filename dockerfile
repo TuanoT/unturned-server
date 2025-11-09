@@ -5,7 +5,6 @@ ENV DEBIAN_FRONTEND=noninteractive
 # Install dependencies
 RUN apt-get update && apt-get install -y \
     ca-certificates \
-    lib32gcc-s1 \
     wget \
     tar \
     locales \
@@ -18,9 +17,9 @@ ENV LANGUAGE=en_US:en
 ENV LC_ALL=en_US.UTF-8
 
 # Create directories and add user
-RUN mkdir -p /steamcmd /unturned && \
-    useradd -m -d /home/unturned -s /bin/bash unturned && \
-    chown -R unturned:unturned /steamcmd /unturned
+RUN mkdir -p /steamcmd /unturned
+RUN useradd -m -d /home/unturned -s /bin/bash unturned
+RUN chown -R unturned:unturned /steamcmd /unturned
 
 USER unturned
 WORKDIR /home/unturned
@@ -29,9 +28,10 @@ WORKDIR /home/unturned
 RUN wget -qO- https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz | tar -xz -C /steamcmd
 RUN /steamcmd/steamcmd.sh +force_install_dir /unturned +login anonymous +app_update 1110390 validate +quit
 
-# Link Steam client library to users folder so Unturned doesn't complain
+# Copy Steam client library to users folder so Unturned doesn't complain
 RUN mkdir -p /home/unturned/.steam/sdk64
-RUN ln -s /unturned/steamclient.so /home/unturned/.steam/sdk64/steamclient.so
+RUN cp /unturned/steamclient.so /home/unturned/.steam/sdk64/steamclient.so
+RUN chmod +r /home/unturned/.steam/sdk64/steamclient.so
 
 # Expose ports
 EXPOSE 27015-27016/tcp
