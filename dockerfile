@@ -5,6 +5,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 # Install dependencies
 RUN apt-get update && apt-get install -y \
     ca-certificates \
+    lib32gcc-s1 \
     wget \
     tar \
     locales \
