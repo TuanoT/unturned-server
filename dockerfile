@@ -34,5 +34,5 @@ EXPOSE 27015-27016/tcp
 EXPOSE 27015-27016/udp
 
 # Set working directory and startup command
-WORKDIR $SERVERDIR
+WORKDIR /unturned
 ENTRYPOINT ["./Unturned_Headless.x86_64", "-nographics", "-batchmode", "+InternetServer/MyServer"]
