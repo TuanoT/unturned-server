@@ -29,6 +29,10 @@ WORKDIR /home/unturned
 RUN wget -qO- https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz | tar -xz -C /steamcmd
 RUN /steamcmd/steamcmd.sh +force_install_dir /unturned +login anonymous +app_update 1110390 validate +quit
 
+# Link Steam client library to users folder so Unturned doesn't complain
+RUN mkdir -p /home/unturned/.steam/sdk64
+RUN ln -s /unturned/steamclient.so /home/unturned/.steam/sdk64/steamclient.so
+
 # Expose ports
 EXPOSE 27015-27016/tcp
 EXPOSE 27015-27016/udp
