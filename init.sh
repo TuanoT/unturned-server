@@ -22,13 +22,17 @@ SERVER_NAME="${SERVER_NAME:-MelbourneVanilla}"
 MAP="${MAP:-Washington}"
 GSLT="${GSLT:-}"
 
-ARGS="-batchmode -nographics +InternetServer/$SERVER_NAME +Map $MAP"
+ARGS=(
+    "-batchmode"
+    "-nographics"
+    "+InternetServer/$SERVER_NAME"
+    "+Map"
+    "$MAP"
+)
 
-# Add GSLT if provided
 if [ -n "$GSLT" ]; then
-    ARGS="$ARGS +GSLT $GSLT"
+    ARGS+=("+GSLT" "$GSLT")
 fi
 
-
 echo "Running: ${SERVER_NAME}..."
-exec ./Unturned_Headless.x86_64 $ARGS
+exec ./Unturned_Headless.x86_64 "${ARGS[@]}"
