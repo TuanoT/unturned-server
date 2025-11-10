@@ -10,12 +10,18 @@ fi
 SERVER_NAME="${SERVER_NAME:-MelbourneVanilla}"
 MAP="${MAP:-Washington}"
 GSLT="${GSLT:-}"
-
-CMD="./Unturned_Headless.x86_64 -nographics -batchmode +InternetServer/$SERVER_NAME +Map:$MAP"
+ARGS=(
+    "./Unturned_Headless.x86_64"
+    "-nographics"
+    "-batchmode"
+    "+InternetServer/${SERVER_NAME}"
+    "+Map:${MAP}"
+)
 
 # Add GSLT if provided
 if [ -n "$GSLT" ]; then
-    CMD="$CMD +GSLT:$GSLT"
+    ARGS+=("+GSLT:${GSLT}")
 fi
 
-exec $CMD
+echo "Starting Unturned Server..."
+exec "${ARGS[@]}"
