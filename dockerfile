@@ -38,10 +38,14 @@ RUN mkdir -p /home/unturned/.steam/sdk64
 RUN cp -f /server/linux64/steamclient.so /home/unturned/.steam/sdk64/steamclient.so
 RUN chmod +r /home/unturned/.steam/sdk64/steamclient.so
 
+# Copy shell script
+COPY --chown=unturned:unturned init.sh /home/unturned/init.sh
+RUN chmod +x /home/unturned/init.sh
+
 # Expose ports
 EXPOSE 27015-27016/tcp
 EXPOSE 27015-27016/udp
 
 # Set working directory and startup command
 WORKDIR /server
-ENTRYPOINT ["./Unturned_Headless.x86_64", "-nographics", "-batchmode", "+InternetServer/MyServer"]
+ENTRYPOINT ["/home/unturned/init.sh"]
