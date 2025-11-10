@@ -39,7 +39,7 @@ RUN cp -f /server/linux64/steamclient.so /home/unturned/.steam/sdk64/steamclient
 RUN chmod +r /home/unturned/.steam/sdk64/steamclient.so
 
 # Copy shell script
-COPY --chown=unturned:unturned init.sh /home/unturned/init.sh
+COPY init.sh /home/unturned/init.sh
 RUN chmod +x /home/unturned/init.sh
 
 # Expose ports
@@ -47,5 +47,6 @@ EXPOSE 27015-27016/tcp
 EXPOSE 27015-27016/udp
 
 # Set working directory and startup command
+USER root
 WORKDIR /server
 ENTRYPOINT ["/home/unturned/init.sh"]
