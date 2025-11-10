@@ -3,6 +3,9 @@ set -e
 
 echo "Starting Unturned Server..."
 
+ulimit -n 2048
+export TERM=xterm
+
 # If running as root, handle mounts on host machine and switch to unturned user
 if [ "$(id -u)" = "0" ]; then
     echo "Checking for mounted /server volume..."
@@ -18,18 +21,14 @@ fi
 SERVER_NAME="${SERVER_NAME:-MelbourneVanilla}"
 MAP="${MAP:-Washington}"
 GSLT="${GSLT:-}"
-ARGS=(
-    "./Unturned_Headless.x86_64"
-    "-nographics"
-    "-batchmode"
-    "+InternetServer/${SERVER_NAME}"
-    "+Map:${MAP}"
-)
+
+ARGS="-batchmode -nographics +InternetServer/$SERVER_NAME +Map $MAP"
 
 # Add GSLT if provided
 if [ -n "$GSLT" ]; then
-    ARGS+=("+GSLT:${GSLT}")
+    ARGS="$ARGS +GSLT $GSLT"
 fi
 
-echo "Launching Unturned server: ${SERVER_NAME} (${MAP})"
-exec "${ARGS[@]}"
+
+echo "Running: ${SERVER_NAME}..."
+exec ./Unturned_Headless.x86_64 $ARGS
