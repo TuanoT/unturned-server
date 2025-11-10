@@ -28,7 +28,7 @@ ARGS=(
 
 # Add GSLT if provided
 if [ -n "$GSLT" ]; then
-    ARGS+=("+GSLT" "$GSLT")
+    ARGS+=("+GSLT:${GSLT}")
 fi
 
 echo "Launching Unturned server: ${SERVER_NAME} (${MAP})"
