@@ -3,9 +3,14 @@ set -e
 
 echo "Starting Unturned Server..."
 
-# Give unturned ownership of the server mount on the host system and re-exec as unturned
+# If running as root, handle mounts on host machine and switch to unturned user
 if [ "$(id -u)" = "0" ]; then
-    chown -R unturned:unturned /server
+    echo "Checking for mounted /server volume..."
+    if mountpoint -q /server; then
+        echo "/server is a mount - fixing permissions..."
+        chown -R unturned:unturned /server
+    fi
+
     echo "Switching to unturned user..."
     exec su -s /bin/bash unturned -c "/home/unturned/init.sh"
 fi
@@ -26,4 +31,5 @@ if [ -n "$GSLT" ]; then
     ARGS+=("+GSLT:${GSLT}")
 fi
 
+echo "Launching Unturned server: ${SERVER_NAME} (${MAP})"
 exec "${ARGS[@]}"
