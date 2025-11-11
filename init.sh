@@ -22,12 +22,24 @@ if [ ! -f /server/Unturned_Headless.x86_64 ]; then
     echo "/server is empty, copying base Unturned install..."
     cp -r /opt/unturned/* /server/
 fi
-
 cd /server
 
-# Server settings
-SERVER_NAME="MelbourneVanilla"
-MAP=Washington
+# Get aruguments from environment variables
+SERVER_NAME="${SERVER_NAME:-MelbourneVanilla}"
+MAP="${MAP:-Washington}"
+GSLT="${GSLT:-}"
+
+ARGS=(
+  "-batchmode"
+  "-nographics"
+  "+InternetServer/${SERVER_NAME}"
+  "+Map/${MAP}"
+)
+
+# Add GSLT if provided
+if [ -n "$GSLT" ]; then
+  ARGS+=("+GSLT/${GSLT}")
+fi
 
 echo "Running server: ${SERVER_NAME} on map ${MAP}..."
-exec ./Unturned_Headless.x86_64 -batchmode -nographics +InternetServer/${SERVER_NAME}
+exec ./ServerHelper.sh "${ARGS[@]}"
