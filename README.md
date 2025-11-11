@@ -4,7 +4,7 @@ Run an Unturned dedicated server with Docker.
 
 ## Build the Docker image
 ```bash
-docker build -t unturned-server .
+docker build -t tuanot/unturned-server .
 ```
 
 ## Run the container
