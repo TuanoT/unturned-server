@@ -42,7 +42,7 @@ RUN chmod +r /home/unturned/.steam/sdk64/steamclient.so
 COPY --chown=unturned:unturned init.sh /home/unturned/init.sh
 RUN chmod +x /home/unturned/init.sh
 
-# Expose ports (default Unturned ports)
+# Expose ports (maybe not needed with Docker's port mapping)
 EXPOSE 27015-27016/tcp
 EXPOSE 27015-27016/udp
 
