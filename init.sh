@@ -18,9 +18,10 @@ if [ "$(id -u)" = "0" ]; then
     exec su -s /bin/bash unturned -c "/home/unturned/init.sh"
 fi
 
-SERVER_NAME="${SERVER_NAME:-MelbourneVanilla}"
-MAP="${MAP:-Washington}"
-GSLT="${GSLT:-}"
+# Server settings
+SERVER_NAME="MelbourneVanilla"
+MAP="Washington"
+GSLT="07577C5CE9C2665B2BFBCB1B063C19A5" # I don't give a fuck about this
 
-echo "Running: ${SERVER_NAME}..."
-exec ./Unturned_Headless.x86_64 -batchmode -nographics +InternetServer/$SERVER_NAME
+echo "Running server: ${SERVER_NAME} on map ${MAP}..."
+exec ./Unturned_Headless.x86_64 -batchmode -nographics +InternetServer/${SERVER_NAME} +Map ${MAP} +GSLT ${GSLT}
