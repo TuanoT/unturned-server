@@ -23,4 +23,4 @@ MAP="${MAP:-Washington}"
 GSLT="${GSLT:-}"
 
 echo "Running: ${SERVER_NAME}..."
-# exec ./Unturned_Headless.x86_64 -batchmode -nographics +InternetServer/"$SERVER_NAME" "+Map $MAP" ${GSLT:++GSLT "$GSLT"}
+exec ./Unturned_Headless.x86_64 -batchmode -nographics +InternetServer/$SERVER_NAME
