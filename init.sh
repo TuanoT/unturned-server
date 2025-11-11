@@ -26,15 +26,6 @@ cd /server
 
 # Get aruguments from environment variables
 SERVER_NAME="${SERVER_NAME:-MelbourneVanilla}"
-MAP="${MAP:-Washington}"
-GSLT="${GSLT:-}"
-
-ARGS=(
-  "-batchmode"
-  "-nographics"
-  "+InternetServer/${SERVER_NAME}"
-  "+Map/${MAP}"
-)
 
 # Add GSLT if provided
 if [ -n "$GSLT" ]; then
@@ -42,4 +33,4 @@ if [ -n "$GSLT" ]; then
 fi
 
 echo "Running server: ${SERVER_NAME} on map ${MAP}..."
-exec ./ServerHelper.sh "${ARGS[@]}"
+exec ./ServerHelper.sh -batchmode -nographics "+InternetServer/${SERVER_NAME}"
