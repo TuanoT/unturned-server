@@ -10,6 +10,7 @@ RUN apt-get update && apt-get install -y \
     tar \
     locales \
     nano \
+    screen \
     && rm -rf /var/lib/apt/lists/*
 
 # Set locale 
@@ -49,4 +50,4 @@ EXPOSE 27015-27016/udp
 # Set working directory and startup command
 USER root
 WORKDIR /server
-ENTRYPOINT ["/home/unturned/init.sh"]
+ENTRYPOINT ["screen", "-S", "unturned", "-Dm", "/home/unturned/init.sh"]
