@@ -24,4 +24,4 @@ MAP="Washington"
 GSLT="07577C5CE9C2665B2BFBCB1B063C19A5" # I don't give a fuck about this
 
 echo "Running server: ${SERVER_NAME} on map ${MAP}..."
-exec ./Unturned_Headless.x86_64 -batchmode -nographics +InternetServer/${SERVER_NAME} +Map ${MAP} +GSLT ${GSLT}
+exec ./Unturned_Headless.x86_64 -batchmode -nographics +Map ${MAP} +GSLT ${GSLT} +InternetServer/${SERVER_NAME}
