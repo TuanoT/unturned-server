@@ -28,4 +28,4 @@ cd /server
 SERVER_NAME="${SERVER_NAME:-MelbourneVanilla}"
 
 echo "Running server: ${SERVER_NAME}..."
-exec ./ServerHelper.sh -batchmode -nographics "+InternetServer/${SERVER_NAME}"
+exec screen -S unturned ./ServerHelper.sh -batchmode -nographics "+InternetServer/${SERVER_NAME}"
