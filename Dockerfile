@@ -1,16 +1,17 @@
 FROM ubuntu:22.04
 
 ENV DEBIAN_FRONTEND=noninteractive
-ENV HOME_DIR=/home/steam
-ENV GAME_INSTALL_DIR=$HOME_DIR/Unturned
 ENV SERVER_NAME=server
 ENV GAME_ID=1110390
-ENV STEAMCMD_DIR=$HOME_DIR/steamcmd
 ENV AUTOSAVE_INTERVAL=300
+
+ENV HOME_DIR=/home/steam
+ENV GAME_INSTALL_DIR=$HOME_DIR/unturned
+ENV STEAMCMD_DIR=$HOME_DIR/steamcmd
 
 # Install required packages
 RUN apt-get update && \
-    apt-get install -y unzip tar curl coreutils lib32gcc-s1 libgdiplus screen && \
+    apt-get install -y unzip tar curl coreutils lib32gcc-s1 libgdiplus screen nano && \
     apt-get clean -y && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 

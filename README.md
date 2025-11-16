@@ -22,9 +22,3 @@ docker run -it \
   --restart unless-stopped \
   tuanot/unturned-server
 ```
-
-## Configuring the server
-
-Navigate to /Servers/MyServer in either the mount on your host machine or inside /server in the container depending on whether you mounted Unturned's server files. In /Servers/MyServer, you will find Config.txt and Server/Commands.dat. Inside Config.txt you should put your Steam Game Server Token if you have one, and change any game settings you want. Inside Command.dat you can set server map, name and difficulty.
-
-Bullshit with -it and attach for save

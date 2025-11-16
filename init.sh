@@ -17,10 +17,6 @@ else
     export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$(pwd)/Unturned_Headless/Plugins/x86_64/"
 fi
 
-# --- CONFIG ---
-AUTOSAVE_INTERVAL=${AUTOSAVE_INTERVAL:-300} # default 5 minutes
-# ---------------
-
 send_command() {
     if screen -ls "unturned" > /dev/null 2>&1; then
         screen -S "unturned" -X stuff "$1"$'\n'
@@ -29,7 +25,7 @@ send_command() {
 }
 
 graceful_shutdown() {
-    echo "Received shutdown signal at $(date)" >&2
+    echo "Received shutdown signal at $(date)." >&2
     send_command "say Server restarting in 3 seconds"
     send_command "shutdown 3"
 
@@ -41,21 +37,18 @@ graceful_shutdown() {
         sleep 1
     done
 
-    echo "Server shutdown completed gracefully"
+    echo "Server shutdown completed gracefully."
     exit 0
 }
 
 # Trap Docker stop
 trap graceful_shutdown SIGTERM SIGINT
 
-
 echo "Starting Unturned server in screen session..."
 screen -dmS "unturned" -L -Logfile "$LOG_DIR/latest.log" \
     ./Unturned_Headless.x86_64 -batchmode -nographics +secureserver/"$SERVER_NAME"
 
-
 echo "Server started. Log: $LOG_DIR/latest.log"
-
 
 # ------------------------------
 # AUTO-SAVE LOOP
